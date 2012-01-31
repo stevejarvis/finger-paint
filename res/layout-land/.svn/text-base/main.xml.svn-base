@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  LANDSCAPE  -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    
+<!-- Gray background -->
+<ImageView 
+	style="@style/FPFP.no_rotate"
+	android:id="@+id/gray"
+    android:background="@color/gray"/>
+    
+<!-- Holds the image on import -->
+<ImageView 
+	android:id="@+id/imported"
+    style="@style/FPFP.no_rotate"/>
+    
+<!-- This is the layout for the drawing surface -->
+<LinearLayout
+	android:id="@+id/drawing"
+    style="@style/FPFP.no_rotate"/>
+    
+<!-- This will only be a button to open the panel when it's closed -->
+<RelativeLayout
+	android:id="@+id/open_panel"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:visibility="gone">
+    <ImageView 
+    	android:id="@+id/open_button"
+		style="@style/open_close"
+		android:layout_alignParentTop="true"
+		android:layout_alignParentLeft="true"
+		android:layout_marginTop="10dp"
+		android:layout_marginLeft="10dp"
+		android:src="@drawable/open_panel"/>
+    </RelativeLayout>
+    
+<!-- Ads! -->
+<RelativeLayout 
+	style="@style/FPFP">
+	<LinearLayout
+		android:id="@+id/ads"
+		style="@style/WCWC"
+		android:layout_alignParentBottom="true"/>
+</RelativeLayout>
+	
+<!-- This is the actual panel -->
+<RelativeLayout
+	android:id="@+id/panel"
+	android:layout_width="350dp"
+	android:layout_height="wrap_content"
+	android:background="@drawable/panel"
+    android:paddingBottom="15dp">
+	<ImageView 
+		android:id="@+id/close_button"
+		style="@style/open_close"
+		android:layout_alignParentTop="true"
+		android:layout_alignParentRight="true"
+   		android:src="@drawable/close_panel"/>
+   	<TableLayout
+   		android:id="@+id/button_table"
+   		android:layout_below="@+id/close_button"
+   		style="@style/table_layout">
+   		<TableRow
+   			style="@style/panel_row">
+   			<ImageView
+   				android:id="@+id/brush_chooser"	
+   				style="@style/panel_item.landscape"
+   				android:src="@drawable/brush"/>
+   			<ImageView
+   				android:id="@+id/color_chooser"	
+   				style="@style/panel_item.landscape"
+   				android:background="@drawable/color_back"/>
+   			<ImageView
+   				android:id="@+id/eraser"	
+   				style="@style/panel_item.landscape"
+   				android:src="@drawable/eraser"/>
+   			<ImageView
+   				android:id="@+id/color_dropper"	
+   				style="@style/panel_item.landscape"
+   				android:src="@drawable/dropper"/>
+   		</TableRow>
+   		<TableRow
+   			style="@style/panel_row">
+   			<ImageView
+   				android:id="@+id/undo"
+   				style="@style/panel_item.landscape"
+   				android:src="@drawable/undo"/>
+   			<ImageView
+   				android:id="@+id/redo"
+   				style="@style/panel_item.landscape"
+   				android:src="@drawable/redo"/>
+   			<ImageView
+   				android:id="@+id/clear_canvas"	
+   				style="@style/panel_item.landscape"
+   				android:src="@drawable/clear"/>
+   			<ImageView
+   				android:id="@+id/save"
+   				style="@style/panel_item.landscape"
+   				android:src="@drawable/save"/>
+   		</TableRow>
+   		<TableRow
+   			style="@style/panel_row">
+   			<ImageView
+   				android:id="@+id/send"
+   				style="@style/panel_item.landscape"
+   				android:src="@drawable/share"/>
+   			<ImageView
+   				android:id="@+id/import_pic"
+   				style="@style/panel_item.landscape"
+   				android:src="@drawable/import_pic"/>
+   			<ImageView
+   				android:id="@+id/shaken"
+   				style="@style/panel_item.landscape"
+   				android:src="@drawable/shaken"/>
+   			<TextView
+				android:id="@+id/brush_current_size"
+				style="@style/WCWC"
+				android:layout_gravity="center_horizontal"
+				android:color="@color/gray"/>
+   		</TableRow>
+   	</TableLayout>
+   	<LinearLayout
+   		android:id="@+id/seekbar"
+   		android:layout_below="@+id/button_table"
+   		android:layout_width="fill_parent"
+   		android:layout_height="wrap_content"
+   		android:layout_marginBottom="3dp">
+   		<SeekBar 
+			android:id="@+id/brush_sizer"
+			android:layout_height="wrap_content"
+			android:layout_width="fill_parent"
+			android:max="99"
+			android:progress="12"
+			android:progressDrawable="@drawable/transparent"/>	
+   	</LinearLayout>
+</RelativeLayout>
+</FrameLayout>

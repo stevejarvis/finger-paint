@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.sajarvis.fingerpaint"
+      android:versionCode="5"
+      android:versionName="2.0">
+    <uses-sdk android:minSdkVersion="8" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+  	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+  	<!-- <uses-permission android:name="com.android.vending.CHECK_LICENSE" /> -->
+
+    <application android:icon="@drawable/icon" 
+    	android:label="@string/app_name"
+    	android:theme="@android:style/Theme.NoTitleBar">
+        <activity android:name="com.sajarvis.paint.Main"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.sajarvis.paint.Sizer"
+				  android:label="Choose a Size"
+				  android:theme="@style/dialog_box">
+		</activity>
+		<activity android:name="com.sajarvis.paint.Brushes"
+				  android:label="Choose a Brush"
+				  android:theme="@style/dialog_box">
+		</activity>
+		<activity android:name="com.sajarvis.paint.Intro"
+				  android:label="Hey Artist!"
+				  android:theme="@style/dialog_box">
+		</activity>
+		<activity android:name="com.sajarvis.paint.Confirm"
+				  android:label="Confirm"
+				  android:theme="@android:style/Theme.Dialog">
+		</activity>
+		<activity android:name="com.sajarvis.paint.FileName"
+				  android:label="Save to SD Card"
+				  android:theme="@style/dialog_box">
+		</activity>
+		<activity android:name="com.sajarvis.paint.Clear"
+				  android:label="What do you want to clear?"
+				  android:theme="@style/dialog_box">
+		</activity>
+		<activity android:name="com.sajarvis.paint.About"
+				  android:label="About the Toolbox"
+				  android:theme="@style/dialog_box">
+		</activity>
+		<activity android:name="com.sajarvis.paint.Prompt"
+				  android:label="There's More..."
+				  android:theme="@style/dialog_box">
+		</activity>
+		<uses-library android:name="yuku.ambilwarna.AmbilWarnaDialog"
+              android:required="false" />
+		<activity android:name="yuku.ambilwarna.AmbilWarnaDialog"
+				android:theme="@style/dialog_box"/>
+		<activity android:name="yuku.ambilwarna.AmbilWarnaKotak"
+				android:theme="@style/dialog_box"/>
+		<activity android:name="com.google.ads.AdActivity"
+              android:configChanges="keyboard|keyboardHidden|orientation"/>
+    </application>
+</manifest>

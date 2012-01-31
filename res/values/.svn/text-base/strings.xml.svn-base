@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Finger Paint</string>
+    <string name="sizer">Size: 12</string>
+    <string name="clear_confirm">Are you sure? This will clear all your work!</string>
+    <string name="intro_open">Shows and hides the painting toolbox.</string>
+    <string name="intro_brush">Use this to choose from a wide variety of brush styles. You can mix and match for original effects.</string>
+    <string name="intro_eraser">Erase the laid paint.</string>
+    <string name="intro_clear">Clear the drawing, the imported picture, or both.</string>
+    <string name="intro_undo">Undo the last edit.</string>
+    <string name="intro_redo">Redo the last undo.</string>
+    <string name="intro_save">Choose the file name and save the current painting to external storage. </string>
+    <string name="intro_share">Share the picture with the world. It must be saved first.</string>
+    <string name="intro_import">Import a picture from the gallery to edit.</string>
+    <string name="intro_shaken">Toggle the shake feature on and off. When on, shake the phone for a random color.</string>
+    <string name="eraser_on">Eraser On</string>
+    <string name="eraser_off">Eraser Off</string>
+    <string name="shake_on">Shake Feature On</string>
+    <string name="shake_off">Shake Feature Off</string>
+    <string name="intro_thumb">Choose from many different brush sizes using the slider.</string>
+    <string name="noti_title">Painting Saved</string>
+    <string name="save_first">Save the Current Painting Before Sharing</string>
+    <string name="dropper_off">Dropper Off</string>
+    <string name="dropper_on">Dropper On</string>
+    <string name="intro_dropper">Choose a color you\'ve used with the dropper. Just touch the desired color and the paint will be updated to match.</string>
+	<string name="prompt">Want to import pics? Pro Paint does that.\n\n
+    		- Import pictures\n 
+    		- No more ads\n
+    		- Impress everyone with your drawing\n\n
+    		Only a buck! Thanks!</string>
+    <string name="to_market">Check It Out</string>
+    <string name="no_thanks">No Thanks</string>
+    <string name="no_show">Don\'t show again</string>
+    <string name="see_more">More (Web)</string>
+    <string name="import_error">Whoops, problem. Try again.</string>
+</resources>

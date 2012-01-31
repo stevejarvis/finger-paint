@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="backgrounds">#77000000</color>
+    <color name="gray">#FFAAAAAA</color>
+    <color name="black">#FFDDDDDD</color>
+    <color name="disabled">#AACCCCCC</color>
+</resources>

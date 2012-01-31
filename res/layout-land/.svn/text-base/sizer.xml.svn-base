@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<ToggleButton
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:id="@+id/small"
+	android:textOn="Small (On)"
+	android:textOff="Small (Off)"
+	>
+	</ToggleButton>
+<ToggleButton
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:id="@+id/med"
+	android:textOn="Medium (On)"
+	android:textOff="Medium (Off)"
+	>
+	</ToggleButton>
+<ToggleButton
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:id="@+id/large"
+	android:textOn="Large (On)"
+	android:textOff="Large (Off)"
+	>
+	</ToggleButton>
+<ToggleButton
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:id="@+id/huge"
+	android:textOn="Huge (On)"
+	android:textOff="Huge (Off)"
+	>
+	</ToggleButton>
+</LinearLayout>
+</ScrollView>

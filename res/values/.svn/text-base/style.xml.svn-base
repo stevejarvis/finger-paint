@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="dialog_box" parent="@android:style/Theme.Dialog">
+	</style>
+	<style name="FPWC">
+		<item name="android:layout_width">fill_parent</item>
+    	<item name="android:layout_height">wrap_content</item>
+	</style>
+	<style name="WCWC">
+		<item name="android:layout_width">wrap_content</item>
+    	<item name="android:layout_height">wrap_content</item>
+	</style>
+	<style name="FPFP">
+		<item name="android:layout_width">fill_parent</item>
+    	<item name="android:layout_height">fill_parent</item>
+	</style>
+	<style name="FPFP.no_rotate">
+		<item name="android:screenOrientation">portrait</item>
+	</style>
+	<style name="table_layout">
+		<item name="android:layout_width">fill_parent</item>
+    	<item name="android:layout_height">wrap_content</item>
+    	<item name="android:layout_marginBottom">15dp</item>
+    	<item name="android:stretchColumns">*</item>
+	</style>
+	<style name="panel_item">
+		<item name="android:layout_width">40dp</item>
+    	<item name="android:layout_height">40dp</item>
+    	<item name="android:textSize">12sp</item>
+    	<item name="android:layout_marginLeft">5dp</item>
+    	<item name="android:layout_marginRight">5dp</item>
+	</style>
+	<style name="panel_item.landscape">
+		<item name="android:layout_width">30dp</item>
+    	<item name="android:layout_height">30dp</item>
+	</style>
+	<style name="about">
+		<item name="android:layout_width">fill_parent</item>
+    	<item name="android:layout_height">wrap_content</item>
+		<item name="android:shrinkColumns">*</item>
+	</style>
+	<style name="about_image">
+		<item name="android:layout_width">80dp</item>
+    	<item name="android:layout_height">80dp</item>
+    	<item name="android:layout_gravity">center</item>
+    	<item name="android:layout_marginRight">5dp</item>
+	</style>
+	<style name="about_text">
+		<item name="android:layout_width">wrap_content</item>  
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_gravity">center_vertical</item>
+		<item name="android:padding">2dp</item>
+	</style>
+	<style name="open_close">
+		<item name="android:layout_width">35dp</item>
+    	<item name="android:layout_height">35dp</item>
+	</style>
+	<style name="panel_row">
+		<item name="android:layout_width">wrap_content</item>
+    	<item name="android:layout_height">wrap_content</item>
+    	<item name="android:layout_marginTop">14dp</item>
+	</style>
+	<style name="about_row">
+		<item name="android:layout_width">wrap_content</item>
+    	<item name="android:layout_height">wrap_content</item>
+    	<item name="android:layout_marginTop">4dp</item>
+	</style>
+	<style name="brush_button">
+		<item name="android:layout_width">250dp</item>
+    	<item name="android:layout_height">wrap_content</item>
+	</style>
+</resources>

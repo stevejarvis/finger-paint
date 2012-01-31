@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<RelativeLayout
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<EditText
+	android:id="@+id/sure"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:hint="File Name"
+	android:layout_alignParentTop="true"
+	android:layout_marginBottom="20dp"
+	>
+	</EditText>
+<TableLayout
+	style="@style/table_layout"
+	android:layout_below="@+id/sure"
+	android:layout_alignParentBottom="true">
+<TableRow
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+<Button
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:text="Save"
+	android:id="@+id/save"
+	>
+	</Button>
+<Button
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:text="Cancel"
+	android:id="@+id/cancel"
+	>
+	</Button>
+</TableRow>
+</TableLayout>
+</RelativeLayout>
+</ScrollView>

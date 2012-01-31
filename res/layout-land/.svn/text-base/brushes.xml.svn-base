@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<ToggleButton
+	style="@style/brush_button"
+	android:id="@+id/round"
+	android:textOn="Round (On)"
+	android:textOff="Round (Off)"
+	>
+	</ToggleButton>
+<ToggleButton
+	style="@style/brush_button"
+	android:id="@+id/dash"
+	android:textOn="Dashed (On)"
+	android:textOff="Dashed (Off)"
+	>
+	</ToggleButton>
+<ToggleButton
+	style="@style/brush_button"
+	android:id="@+id/emboss"
+	android:textOn="Emboss (On)"
+	android:textOff="Emboss (Off)"
+	>
+	</ToggleButton>
+<ToggleButton
+	style="@style/brush_button"
+	android:id="@+id/blur"
+	android:textOn="Blur (On)"
+	android:textOff="Blur (Off)"
+	>
+	</ToggleButton>
+<ToggleButton
+	style="@style/brush_button"
+	android:id="@+id/src_atop"
+	android:textOn="Blendy (On)"
+	android:textOff="Blendy (Off)"
+	>
+	</ToggleButton>
+<ToggleButton
+	style="@style/brush_button"
+	android:id="@+id/stroke"
+	android:textOn="Crazy Fill (On)"
+	android:textOff="Crazy Fill (Off)"
+	>
+	</ToggleButton>
+<Button
+	style="@style/brush_button"
+	android:id="@+id/doneBrush"
+	android:layout_marginTop="8dp"
+	android:text="Done"
+	>
+	</Button>
+</LinearLayout>
+</ScrollView>
