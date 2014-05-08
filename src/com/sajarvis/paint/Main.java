@@ -1,4 +1,24 @@
 /*
+ * GNU GENERAL PUBLIC LICENSE
+ *
+ * Android Paint is a Drawing Application for Android.
+ * Copyright (C) 2014 Steve Jarvis
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
  * Copyright (C) 2009 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,13 +38,13 @@
  * By Steve Jarvis. The core of this app was open source provided by Google.
  * I added functionality to make the painting full screen, shake for random colors,
  * save the picture and share it, and change the brush size.
- * 
+ *
  * Version 1.2
  * - Added eye dropper
  * - Changed history to stack of paths/paints. Faster, more stable, and hopefully
  * 		won't cause memory crashes.
  * - Fixed dashed issue. When unchecked round gets checked.
- * 
+ *
  * Version 2.0
  * - Allowed importing in free version
  * - Fixed bug so turning eraser on turns dropper off
@@ -91,7 +111,7 @@ import com.google.ads.AdSize;
 import com.google.ads.AdView;
 import com.sajarvis.fingerpaint.R;
 
-//TODO add import from camera option. 
+//TODO add import from camera option.
 //TODO Make brush selector more graphic.
 //TODO Look into tablet compatibility.
 //TODO support orientation
@@ -101,25 +121,25 @@ public class Main extends GraphicsActivity implements AdListener{
 	/*
 	 * Boolean for the ad version. Allows 2 versions
 	 * If on, show adds and don't check license.
-	 * TODO for releases: 1) change this var 2) change package name 
-	 * TODO 3) app name in strings (Pro Paint / Finger Paint) 
+	 * TODO for releases: 1) change this var 2) change package name
+	 * TODO 3) app name in strings (Pro Paint / Finger Paint)
 	 * 4) comment/uncomment license permission
 	 * !isFree = com.sajarvis.paint	isFree = com.sajarvis.fingerpaint
 	 */
 	/*
 	 * The Amazon version is a combo of both. It's paid, but license checking
 	 * unavailable (I'm assuming). So call the package com.sajarvis.fingerpaint.
-	 * Set isFree=true to take care of licensing. 
+	 * Set isFree=true to take care of licensing.
 	 * New variable isAmazon=true blocks ads.
 	 */
 	private final boolean isFree = true;
 	private final boolean isAmazon = true;
-	
+
 	//For change the app name. Used for directories. Happens in onCreate based on isFree
 	private String dirName;
-	
+
 	//Key for license checking.
-	private static final String BASE64_PUBLIC_KEY = 
+	private static final String BASE64_PUBLIC_KEY =
 		"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxNkSAz" +
 		"dqQVaLYOFmueXHEQzRgiX4hbqCFOdf3WpKyVmzffNz7ZkgMXqB1" +
 		"VtANt/jpt7JxvgIGtXCE9pP1W0O3rTYEYOjdiTi36n+ULUVg8jw" +
@@ -129,12 +149,12 @@ public class Main extends GraphicsActivity implements AdListener{
 		"3JY7SVQw3cruQZuGNNEmWGeuzR00gmQ2C9yfQ4xlvWy3/MoAgbjbcd" +
 		"cH/M/9yKtu9qzxfP2irQIDAQAB";
 	private static final byte[] SALT = new byte[] {
-        46,-65,50,-118,-23,-53,34,-69,53,83,95,-45,-77,-113, 
+        46,-65,50,-118,-23,-53,34,-69,53,83,95,-45,-77,-113,
         46,-93,-91,12,-50,39
     };
 	private LicenseCheckerCallback mLicenseCheckerCallback;
     private LicenseChecker mChecker;
-	    
+
 	//Paint vars and effects.
 	private Paint mPaint;
 	private MaskFilter mEmboss;
@@ -142,23 +162,23 @@ public class Main extends GraphicsActivity implements AdListener{
 	private PorterDuffXfermode mBlendy;
 	private DashPathEffect mDash;
 	private boolean blendOn = false;	//To turn blendy back on after a color or size change
-	
+
 	//Accelerometer
 	private SensorManager mSensorManager;
 	private float mAccel; // acceleration apart from gravity
 	private float mAccelCurrent; // current acceleration including gravity
 	private float mAccelLast; // last acceleration including gravity
-	
+
 	//View
 	DrawingView myView;	//The custom view
 	int width, height;	//passed to custom view to make it the right size.
-	
+
 	//Prefs class is used for paint mostly.
 	private Prefs prefs;
-	
+
 	//Animations
 	private Animation slideIn, slideOut, openHide, adIn, adOut;
-	
+
 	//Panel stuff
 	private LinearLayout drawing;
 	private RelativeLayout panel, openPanel;
@@ -166,76 +186,76 @@ public class Main extends GraphicsActivity implements AdListener{
 			clear,eraser,shaken,grayBack,dropper;
 	private SeekBar brushSizer;
 	private TextView brushSize;
-	
+
 	//Store the file path each time it's stored. Also note whether the canvas
 	//has changed since last save
 	private File path = null;
 	private boolean changed = false;
-	
+
 	//The history stack
 	private Stack history;
 	private int historyCount;
-	
+
 	//For background pic
 	private ImageView backImage;
-	
+
 	//To ignore taps that don't move
 	private boolean somethingWasActuallyDrawn;
-	
+
 	//Mark whether we're in eye dropper mode
 	private boolean dropperOn;
-	
+
 	//Ads
 	AdView adView;
 	LinearLayout ads;
-	
+
 	//onCreate set things up. Most of it happens in other methods called from here.
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		setContentView(R.layout.main);
-		
+
 		//Initiate prefs. All kinds of things use the Prefs class.
 		prefs = new Prefs(this);
-		
+
 		//Declare the app name
 		if(isFree){
 			dirName = "FingerPainting";
 		}else{
 			dirName = "ProPaint";
 		}
-		
+
 		initiateWidgets();
 		initiateAnims();
 		setPaint();
 		initiateAccel();
 		setClickListeners();
-		
+
 		//Dropper function is not on
 		dropperOn = false;
-		
+
 		//Get the height and width of display to make an appropriately sized custom view
-		Display display = getWindowManager().getDefaultDisplay(); 
+		Display display = getWindowManager().getDefaultDisplay();
 		width = display.getWidth();
 		height = display.getHeight();
-		
+
 		//Initialize the history stack.
 		history = new Stack(this, width, height);
 		historyCount = -1;
-		
+
 		//Make a new custom view
 		myView = new DrawingView(this, width, height);
 		myView.setDrawingCacheEnabled(true);	//Allow to save drawing
-		drawing.addView(myView);	
-		
+		drawing.addView(myView);
+
 		//Start off showing it hiding. Might help them know it's there.
 		panel.startAnimation(openHide);
-		
+
 		setBackground(false);	//Sets the back to gray
 		//Set the buttons disabled cause there's nothing in the stack
 		updateUndoRedo();
-		
+
 		//Licensing
 		// Try to use more data here. ANDROID_ID is a single point of attack.
         String deviceId = Secure.getString(getContentResolver(), Secure.ANDROID_ID);
@@ -250,7 +270,7 @@ public class Main extends GraphicsActivity implements AdListener{
         if(!isFree){	//But not in paid version
         	doCheck();
         }
-        
+
         if(isFree && !isAmazon){	//Show ads in the free version, not amazon.
 	        /*
 	         * Admob
@@ -264,7 +284,7 @@ public class Main extends GraphicsActivity implements AdListener{
 	        adView.loadAd(new AdRequest());
         }
 	}
-	
+
 	/*
 	 * Flurry start.
 	 */
@@ -276,16 +296,16 @@ public class Main extends GraphicsActivity implements AdListener{
 	   		FlurryAgent.onStartSession(this, "KQX33XAVQ6BR91LXXSI4");
 	   	}
 	}
-	
+
 	//Make sure the accelerometer listener stops when the app does.
 	@Override
 	protected void onResume() {
     	super.onResume();
-    	mSensorManager.registerListener(mSensorListener, 
-    			mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), 
+    	mSensorManager.registerListener(mSensorListener,
+    			mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
     			SensorManager.SENSOR_DELAY_NORMAL);
   	}
-	
+
 	//Activities for when the app stops.
 	@Override
 	protected void onStop() {
@@ -297,7 +317,7 @@ public class Main extends GraphicsActivity implements AdListener{
 		saveUsedOnExit();
 		FlurryAgent.onEndSession(this);
   	}
-	
+
 	//On app destruction
     @Override
     protected void onDestroy() {
@@ -307,12 +327,12 @@ public class Main extends GraphicsActivity implements AdListener{
         	adView.destroy();
         }
     }
-	
+
 	/*
 	 * Here I initiate all the stuff that could happen in onCreate. Called
 	 * from onCreate.
 	 */
-	
+
 	//Declare all the widgets
 	public void initiateWidgets(){
 		hide = (ImageView) findViewById(R.id.close_button);
@@ -337,7 +357,7 @@ public class Main extends GraphicsActivity implements AdListener{
 		brushSize = (TextView) findViewById(R.id.brush_current_size);
 		dropper = (ImageView) findViewById(R.id.color_dropper);
 	}
-	
+
 	//Declare animations
 	public void initiateAnims(){
 		slideIn = AnimationUtils.loadAnimation(this, R.anim.slide_in);
@@ -345,13 +365,13 @@ public class Main extends GraphicsActivity implements AdListener{
 		openHide = AnimationUtils.loadAnimation(this, R.anim.open_hide);
 		slideOut.setAnimationListener(collapseListener);
 		openHide.setAnimationListener(collapseListener);
-		
+
 		//For ads
 		adIn = AnimationUtils.loadAnimation(this, R.anim.slide_in_ads);
 		adOut = AnimationUtils.loadAnimation(this, R.anim.slide_out_ads);
 		adOut.setAnimationListener(collapseListener);
 	}
-	
+
 	//Set the accelerometer listen stuff
 	public void initiateAccel(){
 		//Accelerometer initialization. Accelerometer used for shaking random color.
@@ -361,7 +381,7 @@ public class Main extends GraphicsActivity implements AdListener{
 		mAccelCurrent = SensorManager.GRAVITY_EARTH;
 		mAccelLast = SensorManager.GRAVITY_EARTH;
 	}
-	
+
 	//Hides the panel after it slides off, otherwise it just shows up again.
 	Animation.AnimationListener collapseListener=new Animation.AnimationListener() {
 		public void onAnimationEnd(Animation animation) {
@@ -379,8 +399,8 @@ public class Main extends GraphicsActivity implements AdListener{
 		public void onAnimationStart(Animation animation) {
 			// not needed
 		}
-	};	
-	
+	};
+
 	//Set the paint variables and preferences from last close
 	public void setPaint(){
 		//mPaint is the paint that will be used to draw the paths.
@@ -404,13 +424,13 @@ public class Main extends GraphicsActivity implements AdListener{
 		brushSizer.setProgress((int)prefs.getLastSize());
 		updateBrushSizeText((int)prefs.getLastSize());
 	}
-	
+
 	//This just updates the text for the brush size.
 	public void updateBrushSizeText(int size){
 		brushSize.setText(""+size);
 		brushSize.setTextSize((int)size/2);
 	}
-	
+
 	//Set the onClickListeners for panel items.
 	public void setClickListeners(){
 		//Hide the panel and ad if free
@@ -421,7 +441,7 @@ public class Main extends GraphicsActivity implements AdListener{
 				if(isFree && !isAmazon){
 					ads.startAnimation(adOut);
 				}
-			}	
+			}
 		});
 		//Show the panel and ad if free
 		show.setOnClickListener(new View.OnClickListener(){
@@ -434,7 +454,7 @@ public class Main extends GraphicsActivity implements AdListener{
 					ads.setVisibility(View.VISIBLE);
 					ads.startAnimation(adIn);
 				}
-			}	
+			}
 		});
 		//Start the brush chooser activity
 		brushChooser.setOnClickListener(new View.OnClickListener(){
@@ -444,7 +464,7 @@ public class Main extends GraphicsActivity implements AdListener{
 				eraserOff();
 				startBrushPicker();
 		    	FlurryAgent.onEvent("Brush picker.");
-			}	
+			}
 		});
 		//Listener for the sizer. Change sizes.
 		brushSizer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -469,7 +489,7 @@ public class Main extends GraphicsActivity implements AdListener{
 				dropperOff();	//Turn eye dropper off
 				eraserOff();
 				getColor();
-			}	
+			}
 		});
 		//Save the drawing.
 		save.setOnClickListener(new View.OnClickListener(){
@@ -477,8 +497,8 @@ public class Main extends GraphicsActivity implements AdListener{
 			public void onClick(View arg0) {
 				//Launches an activity to get the filename to save as.
 				//Will be saved after they pick a valid file name.
-				getFileName();	
-			}	
+				getFileName();
+			}
 		});
 		//Send
 		send.setOnClickListener(new View.OnClickListener(){
@@ -489,7 +509,7 @@ public class Main extends GraphicsActivity implements AdListener{
 				}else{
 					makeToast(getString(R.string.save_first));
 				}
-			}	
+			}
 		});
 		//Import a picture
 		import_pic.setOnClickListener(new View.OnClickListener(){
@@ -504,10 +524,10 @@ public class Main extends GraphicsActivity implements AdListener{
 					 * What if they forget about it and then just think the button
 					 * is broken?
 					 */
-					
+
 				//	startPrompt();
 				//}
-			}	
+			}
 		});
 		//Undo last edit
 		undo.setOnClickListener(new View.OnClickListener(){
@@ -515,7 +535,7 @@ public class Main extends GraphicsActivity implements AdListener{
 			public void onClick(View arg0) {
 				myView.undo();
 				updateUndoRedo();
-			}	
+			}
 		});
 		//Redo that undo
 		redo.setOnClickListener(new View.OnClickListener(){
@@ -523,7 +543,7 @@ public class Main extends GraphicsActivity implements AdListener{
 			public void onClick(View arg0) {
 				myView.redo();
 				updateUndoRedo();
-			}	
+			}
 		});
 		//Eraser
 		eraser.setOnClickListener(new View.OnClickListener(){
@@ -531,7 +551,7 @@ public class Main extends GraphicsActivity implements AdListener{
 			public void onClick(View arg0) {
 				//Turn dropper off if it's on
 				dropperOff();
-				
+
 				if(mPaint.getXfermode() != null){
 					mPaint.setXfermode(null);
 					makeToast(getString(R.string.eraser_off));
@@ -539,7 +559,7 @@ public class Main extends GraphicsActivity implements AdListener{
 					mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
 					makeToast(getString(R.string.eraser_on));
 				}
-			}	
+			}
 		});
 		//Clear canvas
 		clear.setOnClickListener(new View.OnClickListener(){
@@ -548,7 +568,7 @@ public class Main extends GraphicsActivity implements AdListener{
 				startClear();
 				dropperOff();
 				eraserOff();
-			}	
+			}
 		});
 		//Shake on/off
 		shaken.setOnClickListener(new View.OnClickListener(){
@@ -563,7 +583,7 @@ public class Main extends GraphicsActivity implements AdListener{
 		    		prefs.shakeOn(true);
 		    		makeToast(getString(R.string.shake_on));
 		    	}
-			}	
+			}
 		});
 		//The eye dropper function
 		//Shake on/off
@@ -577,10 +597,10 @@ public class Main extends GraphicsActivity implements AdListener{
 					makeToast("Dropper On");
 					dropperOn=true;
 				}
-			}	
+			}
 		});
 	}
-	
+
 	//Clear that background pic. If we imported another pic, set to black. If
 	//we cleared another image, set it back to gray.
 	//true if we're setting to black!
@@ -595,7 +615,7 @@ public class Main extends GraphicsActivity implements AdListener{
 		}
 		myView.invalidate();
 	}
-	
+
 	/*
 	 * Motion listener
 	 */
@@ -617,7 +637,7 @@ public class Main extends GraphicsActivity implements AdListener{
 	    public void onAccuracyChanged(Sensor sensor, int accuracy) {
 	    }
 	};
-	
+
 	/*
 	 * Menu stuff.
 	 */
@@ -628,27 +648,27 @@ public class Main extends GraphicsActivity implements AdListener{
 		inflater.inflate(R.menu.menu, menu);
 		return true;
 	}
-	
+
 	//When a menu item is chosen
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		    case R.id.about:		    	
+		    case R.id.about:
 		    	startActivity(new Intent(this, About.class));
 		        return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	//This updates the color of the colorChooser while keeping the nice rounded edges.
 	public void updateColorChooser(int color){
-		GradientDrawable drawable = 
+		GradientDrawable drawable =
 				(GradientDrawable) this.getResources().getDrawable(R.drawable.color_back);
 		drawable.setColor(color);
 		colorChooser.setBackgroundDrawable(drawable);
 		colorChooser.postInvalidate();
 	}
-	
+
 	//Update the undo/redo buttons after a touch, and after undo/redo, and clear.
 	public void updateUndoRedo(){
 		//if no more undos, disable undo button
@@ -668,7 +688,7 @@ public class Main extends GraphicsActivity implements AdListener{
 			redo.setClickable(true);
 		}
 	}
-	
+
 	//Turn dropper off and make toast message
 	public void dropperOff(){
 		if(dropperOn){
@@ -676,7 +696,7 @@ public class Main extends GraphicsActivity implements AdListener{
 		}
 		dropperOn=false;
 	}
-	
+
 	//Turn eraser on/off and make toast message
 	public void eraserOff(){
 		if(mPaint.getXfermode() != null){
@@ -684,13 +704,13 @@ public class Main extends GraphicsActivity implements AdListener{
 			makeToast(getString(R.string.eraser_off));
 		}
 	}
-	
+
 	//Sets the new color
 	public void getColor(){
-		// initialColor is the initially-selected color to be shown in the rectangle 
-    	//on the left of the arrow. for example, 0xff000000 is black, 0xff0000ff is 
+		// initialColor is the initially-selected color to be shown in the rectangle
+    	//on the left of the arrow. for example, 0xff000000 is black, 0xff0000ff is
     	//blue. Please be aware of the initial 0xff which is the alpha.
-    	AmbilWarnaDialog dialog = new AmbilWarnaDialog(this, mPaint.getColor(), 
+    	AmbilWarnaDialog dialog = new AmbilWarnaDialog(this, mPaint.getColor(),
     			new OnAmbilWarnaListener() {
 	        @Override
 	        public void onOk(AmbilWarnaDialog dialog, int color) {
@@ -708,7 +728,7 @@ public class Main extends GraphicsActivity implements AdListener{
     	});
     	dialog.show();
 	}
-	
+
 	/*
 	 * Saving and sharing the painting.
 	 */
@@ -733,7 +753,7 @@ public class Main extends GraphicsActivity implements AdListener{
 			completeDir.mkdirs();
 			OutputStream fOut = null;
 			File file = new File(completeDir,fileName);
-			if(!file.createNewFile()) 
+			if(!file.createNewFile())
 				FlurryAgent.onError("5", "Failed creating new file", "Fail");
 			fOut = new FileOutputStream(file);
 			bMap.compress(Bitmap.CompressFormat.JPEG, 90, fOut);
@@ -755,15 +775,15 @@ public class Main extends GraphicsActivity implements AdListener{
 		myView.setBackgroundDrawable(null);
 		FlurryAgent.onEvent("Painting saved");
 	}
-	
+
 	//Share the image. Pass the file.
 	public void shareImage(File file){
-		Intent picShare = new Intent(android.content.Intent.ACTION_SEND); 
-		picShare.setType("image/jpeg"); 
-		picShare.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file)); 
+		Intent picShare = new Intent(android.content.Intent.ACTION_SEND);
+		picShare.setType("image/jpeg");
+		picShare.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
 		startActivity(Intent.createChooser(picShare,"Send picture using:"));
 	}
-	
+
 	/*
 	 * Toast and notifications. The communication center.
 	 */
@@ -794,7 +814,7 @@ public class Main extends GraphicsActivity implements AdListener{
 		//Send the notification
 		mNotificationManager.notify(1, notification);
 	}
-	
+
 	/*
 	 * Here's all the startactivities for results.
 	 */
@@ -859,7 +879,7 @@ public class Main extends GraphicsActivity implements AdListener{
 		Intent prompt = new Intent(this, Prompt.class);
 		startActivityForResult(prompt, 6);
 	}
-	
+
 	//Gets results from any activities started for result.
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent){
 		 super.onActivityResult(requestCode, resultCode, intent);
@@ -923,7 +943,7 @@ public class Main extends GraphicsActivity implements AdListener{
 					 }
 		 		 }
 				 else{	//Cancel. Do nothing.
-					 
+
 		 		 }
 		 	 }
 			 break;
@@ -943,7 +963,7 @@ public class Main extends GraphicsActivity implements AdListener{
 		 	break;
 		 case 5:	//Import picture
 			 if(resultCode==RESULT_OK){
-				 //Just the selected image is all we need. decodeUri worries about 
+				 //Just the selected image is all we need. decodeUri worries about
 				 //Changing it into an appropriate bitmap.
 				 Uri selectedImage = intent.getData();
 				 setBitmap(selectedImage);
@@ -959,7 +979,7 @@ public class Main extends GraphicsActivity implements AdListener{
 			 break;
 		 }
 	}
-	
+
 	//From Uri to Bitmap
 	public void setBitmap(Uri selectedImage){
 		Bitmap bmap = null;	//Will contain the pixels
@@ -973,15 +993,15 @@ public class Main extends GraphicsActivity implements AdListener{
 		 myView.picBack(bmap);
 		 myView.invalidate();
 	}
-	
+
 	//Downsizes bitmap. It will be scaled when it's set in mBitmap, but if we don't
 	//do this too it'll run out of memory.
 	private Bitmap decodeUri(Uri selectedImage) throws FileNotFoundException {
-        //Decode image size. 
+        //Decode image size.
         BitmapFactory.Options options = new BitmapFactory.Options();
         //inJustDecodeBounds reads the dimensions without actually importing, so it won't crash.
         options.inJustDecodeBounds = true;
-        BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), 
+        BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage),
         		null, options);
 
         //The new size we want to scale to
@@ -1004,7 +1024,7 @@ public class Main extends GraphicsActivity implements AdListener{
         return BitmapFactory.decodeStream(
         		getContentResolver().openInputStream(selectedImage), null, optScale);
     }
-	
+
 	//setBrush runs after the brush chooser dialog runs.
 	//Set the brush to whatever brush was returned from there.
 	public void setBrush(String brush){
@@ -1019,21 +1039,21 @@ public class Main extends GraphicsActivity implements AdListener{
 		else if(brush.equals("dash")){
 			mPaint.setPathEffect(mDash);
 			mPaint.setStyle(Paint.Style.STROKE);	//Turn off fill
-			
+
 			if(blendOn){
 				setBrush("keepBlendOn");
 			}
 		}
 		else if(brush.equals("emboss")){
             mPaint.setMaskFilter(mEmboss);
-           
+
 			if(blendOn){
 				setBrush("keepBlendOn");
 			}
 		}
 		else if(brush.equals("blur")){
             mPaint.setMaskFilter(mBlur);
-           
+
 			if(blendOn){
 				setBrush("keepBlendOn");
 			}
@@ -1058,14 +1078,14 @@ public class Main extends GraphicsActivity implements AdListener{
 		else if(brush.equals("stroke")){
 			mPaint.setStyle(Paint.Style.FILL);
 			mPaint.setPathEffect(null);	//Turn off dash
-			
+
 			if(blendOn){
 				setBrush("keepBlendOn");
 			}
 		}
 		//else it's probably loading null from prefs, don't do anything.
 	}
-	
+
 	//Save color & brush prefs on exit
     public void saveUsedOnExit(){
     	mPaint.setAlpha(255);	//No transparency for saving.
@@ -1100,10 +1120,10 @@ public class Main extends GraphicsActivity implements AdListener{
 		}
 		return "null";
 	}
-	
+
 	/*
 	 * License checking methods. It's checked against the Market for a valid license.
-	 * During the check buttons are disabled. If it passes everything is enabled and 
+	 * During the check buttons are disabled. If it passes everything is enabled and
 	 * use continues as normal. If check fails status is set to "Invalid License" and
 	 * the user is prompted to exit or buy app and buttons remain disabled.
 	 */
@@ -1152,19 +1172,19 @@ public class Main extends GraphicsActivity implements AdListener{
 
 	@Override
 	public void onPresentScreen(Ad ad) {
-		
+
 	}
 
 	@Override
 	public void onDismissScreen(Ad ad) {
-		
+
 	}
 
 	@Override
 	public void onLeaveApplication(Ad ad) {
-		
+
 	}
-	
+
 	/*
 	 * This is the custom view. Just a drawing surface.
 	 */
@@ -1173,20 +1193,20 @@ public class Main extends GraphicsActivity implements AdListener{
 		private Canvas  mCanvas;
 		private Path    mPath;
 		private Paint   mBitmapPaint;
-		
+
 		//Constructor
 		public DrawingView(Context c, int width, int height) {
 		    super(c);
-		    
+
 		    mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 		    mCanvas = new Canvas(mBitmap);
 		    mPath = new Path();
 		    mBitmapPaint = new Paint(Paint.DITHER_FLAG);
-		    
+
 		    //Save the clear state.
 		    storePp(true);
 		}
-		
+
 		//Shake things up and pick a random color.
 		public void colorRandom() {
 			Random rnd = new Random();
@@ -1198,7 +1218,7 @@ public class Main extends GraphicsActivity implements AdListener{
 			//Set the color icon
 			updateColorChooser(mPaint.getColor());
 		}
-		
+
 		//Clear the drawing
 		public void clearDrawing(){
 			mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
@@ -1214,12 +1234,12 @@ public class Main extends GraphicsActivity implements AdListener{
 			updateUndoRedo();
 			myView.invalidate();
 		}
-		
+
 		//Set the background to a scaled bitmap
 		public void picBack(Bitmap bmap){
 			//Set the background to black. Helps hide the fact that there's spaces.
 			setBackground(true);
-			
+
 			//Catch a null pointer. Seems to happen if the image is corrupted
 			try{
 				Bitmap b = Bitmap.createScaledBitmap(bmap, width, height, false);
@@ -1230,70 +1250,70 @@ public class Main extends GraphicsActivity implements AdListener{
 				makeToast(getString(R.string.import_error));
 			}
 		}
-		
-		//Save the path and paint. Boss just allows an override for the 
+
+		//Save the path and paint. Boss just allows an override for the
 		//somethingWasActuallyDrawn for constructor and clear
 		public void storePp(boolean boss){
 			//Save it! Need to copy the path and paint, otherwise it won't work.
 		    //Seems to be a recurring theme, this inexplicable linkage.
 		    if(somethingWasActuallyDrawn || boss){
 		    	historyCount++;
-		    	if(historyCount > history.getDepth()){ 
+		    	if(historyCount > history.getDepth()){
 			    	historyCount = history.getDepth();
 			    }
 		    	//Not sure how to do this without declaring a new paint. They're
-		    	//otherwise linked somehow. Recurring theme. 
+		    	//otherwise linked somehow. Recurring theme.
 		    	//TODO ask about that. Reference vs Value?
 		    	Paint temp = new Paint();
 		    	temp.set(mPaint);
 		    	history.add(historyCount,new Pp(new Path(mPath), temp));
 		    }
 		}
-		
+
 		//Undo the last change. Involves getting the last id from the stack and
 		//replacing it for the current bitmap. Decrement the count.
 		public void undo(){
 			if(historyCount>0){	//Else we're blank
 				historyCount--;
-				
+
 				//Clear bitmap
 				mBitmap = Bitmap.createBitmap(history.getBase());
 				mCanvas = new Canvas(mBitmap);
-				
-				//We are undoing or redoing								
+
+				//We are undoing or redoing
 				mPath.reset();
-				
+
 				//Loop through all the paths in the history and draw them.
 				for(int i=0; i<=historyCount; i++){
 					//Draw to mBitmap
 					mCanvas.drawPath(history.get(i).getPath(), history.get(i).getPaint());
 				}
-				
+
 				//redraw
 				invalidate();
 			}else{
 				makeToast("End of undo history.");
 			}
 		}
-		
+
 		//Redoing the last undo. If there is one.
 		public void redo(){
 			if(history.getSize() > historyCount+1){	//Then continue, we're in range.
 				historyCount++;
-				
+
 				//Clear bitmap
 				mBitmap = Bitmap.createBitmap(history.getBase());
 				mCanvas = new Canvas(mBitmap);
-				
-				//We are undoing or redoing								
+
+				//We are undoing or redoing
 				mPath.reset();
-				
+
 				//Loop through all the paths in the history and draw them.
 				for(int i=0; i<=historyCount; i++){
 					//Draw to mBitmap
 					mCanvas.drawPath(history.get(i).getPath(), history.get(i).getPaint());
 				}
-				
+
 				invalidate();
 			}else{
 				makeToast("End of redo history.");
@@ -1304,20 +1324,20 @@ public class Main extends GraphicsActivity implements AdListener{
 		protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		    super.onSizeChanged(w, h, oldw, oldh);
 		}
-		
+
 		//Draws the bitmap and paths.
 		@Override
 		protected void onDraw(Canvas canvas) {
 			super.onDraw(canvas);
-			
+
 			//Regular drawing stuff. Needs to be done regardless
 			canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
 		    canvas.drawPath(mPath, mPaint);
 		}
-		
+
 		private float mX, mY;
 		private static final float TOUCH_TOLERANCE = 4;
-		
+
 		//Record the path for the touch start, move, and stop.
 		private void touch_start(float x, float y) {
 		    mPath.reset();
@@ -1339,9 +1359,9 @@ public class Main extends GraphicsActivity implements AdListener{
 		    mPath.lineTo(mX, mY);
 		    // commit the path to our offscreen
 		    mCanvas.drawPath(mPath, mPaint);
-		    
+
 		    storePp(false);
-		    
+
 		    // kill this so we don't double draw
 		    mPath.reset();
 		}
@@ -1359,7 +1379,7 @@ public class Main extends GraphicsActivity implements AdListener{
 				}
 			}else{
 				changed = true;	//We know it's been modified since last save.
-			    
+
 			    switch (event.getAction()) {
 			        case MotionEvent.ACTION_DOWN:
 			        	somethingWasActuallyDrawn = false;
